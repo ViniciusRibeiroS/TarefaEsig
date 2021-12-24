@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1"
+			width="50%"
+			style="margin-right: auto; margin-left: auto; margin-bottom: 25px;">
+
+			<f:facet name="header">
+				<h:outputText value="Cadastrar Tarefa" />
+			</f:facet>
+
+			<h:outputLabel>Titulo</h:outputLabel>
+			<h:inputText title="Titulo" value="#{tarefaBean.titulo}"
+				style="width: 95%" />
+
+			<h:outputLabel>Descrição</h:outputLabel>
+			<h:inputTextarea title="Descricao" value="#{tarefaBean.descricao}"
+				style="width: 95%" />
+
+			<h:outputLabel>Responsável</h:outputLabel>
+			<h:selectOneMenu value="#{tarefaBean.responsavel}" style="width:97%">
+				<f:selectItems value="#{tarefaBean.listaResponsavel}"
+					var="tipoObjVar" itemLabel="#{tipoObjVar.descricao}" />
+			</h:selectOneMenu>
+
+			<h:outputLabel>Prioridade</h:outputLabel>
+			<h:selectOneMenu value="#{tarefaBean.prioridade}" style="width:97%">
+				<f:selectItems value="#{tarefaBean.tipoPrioridade}" var="tipoObjVar"
+					itemLabel="#{tipoObjVar.descricao}" />
+			</h:selectOneMenu>
+
+			<h:outputLabel>Deadline: yyyy-MM-dd</h:outputLabel>
+			<h:inputText value="#{tarefaBean.deadline}" style="width:95%">>
+				<f:convertDateTime pattern="yyyy-MM-dd" />
+			</h:inputText>
+
+			<h:commandButton value="Limpar" action="#{tarefaBean.limpar}"></h:commandButton>
+
+			<h:commandButton value="Salvar" action="#{tarefaBean.salvar}"></h:commandButton>
+		</h:panelGrid>
+
+		<h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1"
+			width="50%"
+			style="margin-right: auto; margin-left: auto; margin-bottom: 25px;">
+			
+			<f:facet name="header">
+				<h:outputText value="Buscar Tarefa" />
+			</f:facet>
+
+			<h:outputLabel>Titulo/Descrição</h:outputLabel>
+			<h:inputText title="TituloDescricao"
+				value="#{tarefaBean.buscarTituloDescricao}" style="width: 95%" />
+
+			<h:outputLabel>Responsável</h:outputLabel>
+			<h:selectOneMenu value="#{tarefaBean.buscarResponsavel}"
+				style="width:97%">
+				
+				<f:selectItem itemLabel="----" />
+				
+
+				<f:selectItems value="#{tarefaBean.listaResponsavel}"
+					var="tipoObjVar" itemLabel="#{tipoObjVar.descricao}" />
+			</h:selectOneMenu>
+
+			<h:outputLabel>Status</h:outputLabel>
+			<h:selectOneMenu value="#{tarefaBean.concluida}" style="width:97%">
+			    <f:selectItem itemLabel="----" />
+				<f:selectItem itemValue="false" itemLabel="Em Andamento" />
+				<f:selectItem itemValue="true" itemLabel="Concluida" />
+			</h:selectOneMenu>
+
+
+			<h:commandButton value="Limpar Busca"
+				action="#{tarefaBean.limparBuscar}">
+			</h:commandButton>
+
+			<h:commandButton value="Buscar" action="#{tarefaBean.buscar}">
+			</h:commandButton>
+		</h:panelGrid>
+
+		<h:dataTable value="#{tarefaBean.tarefas}" id="tabelaTarefas" rendered="#{!tarefaBean.renderResultados}"
+			var="tarefa" border="10" columnClasses="4" width="50%"
+			style="margin-left:auto; margin-right:auto; text-align: center">
+			<h:column headerClass="">
+				<f:facet name="header"> Número </f:facet>
+				<h:outputText value="#{tarefa.id}"></h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header"> Titulo </f:facet>
+				<h:outputText value="#{tarefa.titulo}"></h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header"> Responsável </f:facet>
+				<h:outputText value="#{tarefa.responsavel.descricao}"></h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header"> Ações </f:facet>
+
+				<h:commandButton value="Editar"
+					action="#{tarefaBean.editar(tarefa.id)}"></h:commandButton>
+						|
+						<h:commandButton value="Excluir"
+					action="#{tarefaBean.excluir(tarefa.id)}"></h:commandButton>
+						|
+						<h:commandButton value="Concluir"
+					action="#{tarefaBean.concluir(tarefa.id)}"></h:commandButton>
+			</h:column>
+		</h:dataTable>
+		
+		<h:dataTable value="#{tarefaBean.tarefasBusca}" id="tabelaTarefasBusca" rendered="#{tarefaBean.renderResultados}"
+			var="tarefaBusca" border="10" columnClasses="4" width="50%"
+			style="margin-left:auto; margin-right:auto; text-align: center">
+			<h:column headerClass="">
+				<f:facet name="header"> Número </f:facet>
+				<h:outputText value="#{tarefaBusca.id}"></h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header"> Titulo </f:facet>
+				<h:outputText value="#{tarefaBusca.titulo}"></h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header"> Responsável </f:facet>
+				<h:outputText value="#{tarefaBusca.responsavel.descricao}"></h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header"> Ações </f:facet>
+
+				<h:commandButton value="Editar"
+					action="#{tarefaBean.editar(tarefaBusca.id)}"></h:commandButton>
+						|
+						<h:commandButton value="Excluir"
+					action="#{tarefaBean.excluir(tarefaBusca.id)}"></h:commandButton>
+						|
+						<h:commandButton value="Concluir"
+					action="#{tarefaBean.concluir(tarefaBusca.id)}"></h:commandButton>
+			</h:column>
+		</h:dataTable>
+	</h:form>
+</h:body>
+
+</html>
